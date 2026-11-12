@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Still Here",
+  "version": "0.1.0",
+  "description": "Makes pages think you never left: spoofs tab focus, visibility, window size and fullscreen detection.",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["main.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true,
+      "world": "MAIN"
+    }
+  ]
+}
