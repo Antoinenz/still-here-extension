@@ -1,0 +1,7 @@
+node_modules/
+extension/main.js
+*.zip
+.DS_Store
+CLAUDE.md
+.claude/
+.cursor/

@@ -1,0 +1,11 @@
+{
+  "name": "still-here-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Chrome extension that spoofs focus, visibility, resize and fullscreen detectors",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "license": "MIT"
+}
