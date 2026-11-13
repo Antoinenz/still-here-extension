@@ -1,0 +1,16 @@
+[Unit]
+Description=Still Here detector test page
+After=network.target
+
+[Service]
+User=stillhere
+WorkingDirectory=/home/stillhere/still-here-extension/testpage
+ExecStart=/usr/bin/node server.mjs 43130
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
