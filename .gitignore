@@ -1,5 +1,7 @@
 node_modules/
 extension/main.js
+extension/bridge.js
+extension/defaults.js
 *.zip
 .DS_Store
 CLAUDE.md
