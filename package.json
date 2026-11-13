@@ -5,7 +5,10 @@
   "type": "module",
   "description": "Chrome extension that spoofs focus, visibility, resize and fullscreen detectors",
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/build.mjs && node test/logic.test.mjs",
+    "serve:testpage": "node testpage/server.mjs",
+    "pack": "node scripts/build.mjs && cd extension && zip -qr ../still-here.zip ."
   },
   "license": "MIT"
 }
