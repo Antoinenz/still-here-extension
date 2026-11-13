@@ -1,0 +1,18 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Still Here options</title>
+<link rel="stylesheet" href="ui.css">
+<body style="max-width:640px">
+<h1>Still Here</h1>
+<label class="row"><span>Enabled everywhere</span><input type="checkbox" id="master"></label>
+<h2>Defaults for all sites</h2>
+<div id="flags"></div>
+<h2>Sites with their own settings</h2>
+<table id="sites"></table>
+<p class="muted" id="none" hidden>No per-site settings yet. Use the toolbar popup on a page.</p>
+<h2>Import / export</h2>
+<textarea id="json" spellcheck="false"></textarea>
+<p><button id="export">Export</button> <button id="import">Import</button> <span id="msg" class="muted"></span></p>
+<script src="defaults.js"></script>
+<script src="ui.js"></script>
+<script src="options.js"></script>

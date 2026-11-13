@@ -1,0 +1,18 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="ui.css">
+<h1>Still Here</h1>
+<label class="row"><span>Enabled everywhere</span><input type="checkbox" id="master"></label>
+<div id="site-block">
+  <label class="row"><span>Active on <b id="host"></b></span><input type="checkbox" id="site"></label>
+  <h2>This site <span class="muted">(• = overridden)</span></h2>
+  <div id="flags"></div>
+  <p><button id="reset">Reset this site</button> <button id="reload">Reload tab</button></p>
+  <h2>Detections defeated on this tab</h2>
+  <div id="hits" class="muted">none yet</div>
+</div>
+<div id="no-site" class="muted" hidden>Not available on this page.</div>
+<p><a href="#" id="options">Defaults and all sites</a></p>
+<script src="defaults.js"></script>
+<script src="ui.js"></script>
+<script src="popup.js"></script>

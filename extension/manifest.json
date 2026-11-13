@@ -2,7 +2,12 @@
   "manifest_version": 3,
   "name": "Still Here",
   "version": "0.1.0",
-  "description": "Makes pages think you never left: spoofs tab focus, visibility, window size and fullscreen detection.",
+  "description": "Makes pages think you never left: spoofs tab focus, visibility, window size, fullscreen and other detectors.",
+  "permissions": ["storage", "activeTab"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_popup": "popup.html", "default_title": "Still Here" },
+  "options_ui": { "page": "options.html", "open_in_tab": true },
+  "icons": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png", "128": "icons/128.png" },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -10,7 +15,16 @@
       "run_at": "document_start",
       "all_frames": true,
       "match_about_blank": true,
+      "match_origin_as_about_blank": true,
       "world": "MAIN"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["defaults.js", "bridge.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_about_blank": true
     }
   ]
 }
