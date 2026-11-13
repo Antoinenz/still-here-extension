@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Still Here: detector test page</title>
+<style>
+  body { font: 14px/1.4 ui-monospace, Menlo, monospace; max-width: 920px; margin: 0 auto; padding: 12px 16px 80px; color: #111; background: #fff; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; background: #181818; } input,textarea,button,select { background:#262626; color:#ddd; border:1px solid #555; } a { color:#8ab4ff; } }
+  h1 { font-size: 18px; } h2 { font-size: 15px; margin: 0; }
+  section { border: 1px solid #8886; margin: 14px 0; padding: 8px 12px; }
+  table { border-collapse: collapse; width: 100%; } td, th { text-align: left; padding: 2px 8px 2px 0; vertical-align: top; border-bottom: 1px solid #8883; }
+  td:first-child { width: 46%; opacity: .8; }
+  .badge { float: right; padding: 0 8px; border: 1px solid currentColor; font-weight: bold; }
+  .DETECTED, .FAIL { color: #c00; } .HIDDEN, .PASS, .FAKED { color: #080; } .WAITING, .INFO, .HONEST { color: #888; }
+  .box { border: 1px dashed #888; padding: 8px; margin: 6px 0; }
+  .nosel { -webkit-user-select: none; user-select: none; }
+  #exit { display: none; position: fixed; inset: 0; background: #000c; color: #fff; align-items: center; justify-content: center; font-size: 28px; z-index: 9; text-align: center; }
+  button { cursor: pointer; margin: 2px 4px 2px 0; } textarea, input[type=text] { width: 100%; box-sizing: border-box; }
+  .small { opacity: .7; font-size: 12px; } pre { white-space: pre-wrap; margin: 4px 0; max-height: 160px; overflow: auto; }
+</style>
+</head>
+<body>
+<h1>Still Here: detector test page</h1>
+<p class="small">
+  Each section shows what a page can learn. <b class="DETECTED">DETECTED</b> = the page saw it (bad if you want to hide it),
+  <b class="HIDDEN">HIDDEN</b> = it happened but the page never knew, <b class="WAITING">WAITING</b> = do the action described.
+  With the extension off you should see DETECTED; with it on (matching toggles) HIDDEN / PASS. Nothing here leaves your browser.
+</p>
+<p>
+  <button id="reset">Reset counters</button>
+  <button id="copy">Copy report (JSON)</button>
+  <span id="copied" class="small"></span>
+</p>
+
+<section id="summary"><h2>Summary</h2><table id="sum"></table></section>
+
+<section id="s-focus"><h2>1. Tab focus and visibility <span class="badge WAITING" id="v-focus">WAITING</span></h2>
+  <p class="small">Switch to another tab or app for a few seconds and come back. Or <button id="newtab">open a blank tab (steals focus)</button> then close it.</p>
+  <table id="t-focus"></table>
+  <div class="small">Events seen by this page (page listeners on window and document, plus on* handlers and a capture listener):</div>
+  <pre id="ev-focus">none</pre>
+  <table id="t-truth"></table>
+</section>
+
+<section id="s-resize"><h2>2. Window size, screen and DevTools check <span class="badge WAITING" id="v-resize">WAITING</span></h2>
+  <p class="small">Resize the window, zoom, or dock DevTools. "Real" values come from layout, which cannot be spoofed.</p>
+  <table id="t-resize"></table>
+</section>
+
+<section id="s-fs"><h2>3. Fullscreen <span class="badge WAITING" id="v-fs">WAITING</span></h2>
+  <p>
+    <button id="fs-div">Fullscreen the box</button> <button id="fs-page">Fullscreen the page</button> <button id="fs-exit">Exit fullscreen</button>
+  </p>
+  <div class="box" id="fs-box">Fullscreen target box.<br><span id="fs-result" class="small"></span></div>
+  <table id="t-fs"></table>
+</section>
+
+<section id="s-mouse"><h2>4. Mouse leaves the page (exit intent) <span class="badge WAITING" id="v-mouse">WAITING</span></h2>
+  <p class="small">Move the pointer out of the window (try the top edge), then back in.</p>
+  <table id="t-mouse"></table>
+</section>
+
+<section id="s-clip"><h2>5. Copy / paste / right-click / selection blockers <span class="badge WAITING" id="v-clip">WAITING</span></h2>
+  <p class="small">Try to select, copy, right-click and drag the protected text; paste into the protected field.</p>
+  <div class="box nosel" id="protected" oncopy="return false" oncut="return false" oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+    Protected text: this paragraph blocks selecting, copying, right-click and dragging. The quick brown fox jumps over the lazy dog.
+  </div>
+  <div class="small">Paste-blocked field (try Ctrl/Cmd+V):</div>
+  <input type="text" id="nopaste" onpaste="return false" placeholder="paste is blocked here">
+  <div class="small">Free box: paste what you copied to confirm copying really worked:</div>
+  <textarea id="freebox" rows="2"></textarea>
+  <table id="t-clip"></table>
+</section>
+
+<section id="s-unload"><h2>6. "Leave site?" prompt <span class="badge WAITING" id="v-unload">WAITING</span></h2>
+  <label><input type="checkbox" id="arm"> Arm a beforeunload prompt</label>
+  <p class="small">Tick it, then reload or close the tab. After reload this page reports whether its handler ran.</p>
+  <table id="t-unload"></table>
+</section>
+
+<section id="s-misc"><h2>7. Idle and multi-screen detection <span class="badge WAITING" id="v-misc">WAITING</span></h2>
+  <p>
+    <button id="idle-btn">IdleDetector.requestPermission()</button>
+    <button id="screens-btn">getScreenDetails()</button>
+  </p>
+  <table id="t-misc"></table>
+</section>
+
+<section id="s-stealth"><h2>8. Can the page tell the spoofer is there? <span class="badge WAITING" id="v-stealth">WAITING</span></h2>
+  <p class="small">Probes the patched getters and methods. Run with the extension on; a clean browser passes all of them.</p>
+  <button id="run-stealth">Run probes</button>
+  <table id="t-stealth"></table>
+</section>
+
+<section id="s-timing"><h2>9. Timing and throttling (informational) <span class="badge INFO">INFO</span></h2>
+  <p class="small">Chrome throttles background tabs itself. No extension can hide that from a page that measures it.</p>
+  <table id="t-timing"></table>
+</section>
+
+<div id="exit"><div>Wait! Don't go!<br><small>(exit-intent popup: click to dismiss)</small></div></div>
+<script src="app.js"></script>
+</body>
+</html>
